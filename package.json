@@ -28,8 +28,7 @@
     "graphql": "^14.4.2",
     "pg": "^7.12.1",
     "sequelize": "^5.13.1",
-    "uuid": "^8.3.2",
-    "uuidv4": "^6.2.12"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
