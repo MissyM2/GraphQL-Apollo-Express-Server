@@ -1,34 +1,16 @@
 /** @format */
 
-import Sequelize from "sequelize";
-
-let sequelize;
-if (process.env.DATABASE_URL) {
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-  });
-} else {
-  sequelize = new Sequelize(
-    process.env.TEST_DATABASE || process.env.DATABASE,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-      dialect: 'postgres',
-    },
-  );
-}
-
-
-const models = {
-  Note: sequelize.import("./notes")
+let notes = {
+  1: {
+    id: "1",
+    text: "Hello World"
+  },
+  2: {
+    id: "2",
+    text: "By World"
+  }
 };
 
-Object.keys(models).forEach((key) => {
-  if ("associate" in models[key]) {
-    models[key].associate(models);
-  }
-});
-
-export { sequelize };
-
-export default models;
+export default {
+  notes
+};

@@ -1,45 +1,43 @@
 /** @format */
 
-import uuidv4 from "uuid/v4";
+//import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   Query: {
-    notes: async (parent, args, { models }) => {
-      return await models.Note.findAll();
+    notes: (parent, args, { models }) => {
+      return Object.values(models.notes);
     },
-
-    note: async (parent, { id }, { models }) => {
-      return await models.Note.findByPk(id);
+    note: (parent, { id }, { models }) => {
+      return models.notes[id];
     }
   },
-  
   Mutation: {
-    createNewNote: async (parent, { text }, { models }) => {
-      return await models.Note.create({
+    createNewNote: (parent, { text }, { models }) => {
+      const id = uuidv4();
+      const newNote = {
+        id,
         text
-      });
+      };
+      models.notes[id] = newNote;
+      return newNote;
     },
 
-    deleteNote: async (parent, { id }, { models }) => {
-      return await models.Note.destroy({
-        where: {
-          id
-        }
-      });
+    deleteNote: (parent, { id }, { models }) => {
+      const { [id]: note, ...otherNotes } = models.notes;
+      if (!note) {
+        return false;
+      }
+      models.notes = otherNotes;
+      return true;
     },
-    updateNote: async (parent, { id, text }, { models }) => {
-      await models.Note.update(
-        {
-          text
-        },
-        {
-          where: {
-            id: id
-          }
-        }
-      );
-      const updatedNote = await models.Note.findByPk(id, {
-      });
+    updateNote: (parent, { id, text }, { models }) => {
+      //const { id, text } = args;
+      const updatedNote = {
+        id,
+        text
+      };
+      models.notes[id] = updatedNote;
       return updatedNote;
     }
   }
